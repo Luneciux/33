@@ -1,0 +1,11 @@
+{
+  "name": "33_image_count_pixels",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Luneciux/33_image_count_pixels.git",
+  "author": "luneciux <jejosu346@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jimp": "^0.22.12"
+  }
+}
