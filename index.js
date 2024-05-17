@@ -7,9 +7,6 @@ const convertRgbHex = (r, g, b) => {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 };
 
-const isOnArray = (arr, item) => {
-
-}
 
 const analyzeImageColors = async (imagePath) => {
   try {
@@ -20,10 +17,10 @@ const analyzeImageColors = async (imagePath) => {
     let redColumns = [];
     let filteredRedColumns = [];
     let blueColumns = [];
+    let phraseColumns = [];
     let blueRow = 0;
-    
-    console.log(image.bitmap.width);
-    
+    let yDummy = -1;
+     
 
     image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
 
@@ -54,19 +51,35 @@ const analyzeImageColors = async (imagePath) => {
         }
       }
 
+      if (hexColor == 'FFFFFF' || hexColor == 'FF0000') {
+        phraseColumns.push(x);
+        if (yDummy != y) {
+          yDummy = y;
+          phraseColumns.push(y);
+        }
+      }
+
     });
 
     console.log("stars:  " + colorCount['FFFFFF'] + " pixels");
     console.log("meteors:  " + colorCount['FF0000'] + " pixels");
     console.log("water:  " + colorCount['0000FF'] + " pixels");
     console.log("ground:  " + colorCount['000000'] + " pixels");
+
+
     console.log(redColumns);
     console.log(blueColumns);
-
     filteredRedColumns = redColumns.filter((column) => !blueColumns.includes(column));
     console.log(filteredRedColumns);
+
+
     console.log("QUANTIDADE DE METOROES QUE VAO CAIR NA TERRA:  " + filteredRedColumns.length + " meteoros");
-    console.log("QUANTIDADE DE METOROES QUE VAO CAIR NA AGUA:  " + (redColumns.length - filteredRedColumns.length) + " meteoros");
+    console.log("QUANTIDADE DE METOROES QUE VAO CAIR NA AGUA:  " + (redColumns.length - filteredRedColumns.length) + " meteoros\n\n\n");
+
+    let test = phraseColumns.filter((item) => (item >= 65 && item <= 90) || (item >= 97 && item <= 122) || item == 32);
+    
+    console.log("FRASE DOS PONTOS :\n" + String.fromCharCode.apply(null, test));
+    
 
   } catch (error) {
       console.error('Erro ao carregar ou processar a imagem:', error);
